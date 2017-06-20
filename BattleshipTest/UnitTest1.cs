@@ -280,11 +280,5 @@ namespace BattleshipTest
             Assert.AreEqual(asciiBoardExpected, asciiBoardActual);
         }
 
-
-
-
-
-
-
     }
 }
