@@ -8,7 +8,6 @@ namespace Battleship
     {
         private const String PossibleColumns = "ABCDEFGH";
 
-        private bool _gameOver;
 
         public ShipLocation Board1ShipLocation { get; set; }
         public ShipLocation Board2ShipLocation { get; set; }
@@ -17,6 +16,7 @@ namespace Battleship
         public readonly List<Location> Board2HitLocations = new List<Location>();
         private GamePiece[,] _p1GameBoard;
         private GamePiece[,] _p2GameBoard;
+        private bool _magic;
 
 
         static void Main(string[] args)
@@ -31,28 +31,36 @@ namespace Battleship
             Board2ShipLocation = ReadShipLocation(2);
 
             var isPlayer1Turn = true;
-            while (!_gameOver)
+            int x = 0;
+            while (true)
             {
                 var playerShot = ReadPlayerShot(isPlayer1Turn);
                 if (isPlayer1Turn)
                 {
-                    Board1HitLocations.Add(playerShot);
+                    Board2HitLocations.Add(playerShot);
                 }
                 else
                 {
-                    Board2HitLocations.Add(playerShot);
+                    Board1HitLocations.Add(playerShot);
                 }
                 if (CheckGameOver(isPlayer1Turn))
                 {
                     var player = isPlayer1Turn ? 1 : 2;
                     WriteLine($"Congratulations Player {player}, you sunk my battleship");
                     WriteLine("Game over....");
+                    WriteLine(GetAsciiBoard(true));
+                    WriteLine(GetAsciiBoard(false));
                     break;
                 }
                 isPlayer1Turn = !isPlayer1Turn;
+                if (x > 2)
+                {
+                    _magic = true;
+                }
+                x++;
             }
 
-            ReadLine("Press any key to continue");
+            ReadLine("Press [Enter] to end program...");
         }
 
 
@@ -70,8 +78,8 @@ namespace Battleship
 
         public bool CheckGameOver(bool isPlayer1Turn)
         {
-            var shipLocation = isPlayer1Turn ? Board1ShipLocation : Board2ShipLocation;
-            var hitLocations = isPlayer1Turn ? Board1HitLocations : Board2HitLocations;
+            var shipLocation = isPlayer1Turn ? Board2ShipLocation : Board1ShipLocation;
+            var hitLocations = isPlayer1Turn ? Board2HitLocations : Board1HitLocations;
 
             GamePiece[,] gameBoard;
             if (isPlayer1Turn)
@@ -145,6 +153,14 @@ namespace Battleship
 
         private Location ReadPlayerShot(Boolean isPlayer1Turn)
         {
+            if (_magic)
+            {
+                var p1 = GetAsciiBoard(true);
+                WriteLine(p1);
+                var p2 = GetAsciiBoard(false);
+                WriteLine(p2);
+            }
+
             var player = isPlayer1Turn ? 1 : 2;
             var otherPlayer = isPlayer1Turn ? 2 : 1;
             var strLocation = ReadLine($"Player {player}: Provide a location to hit Player {otherPlayer}. Format: B5").Trim().ToUpper();
@@ -220,7 +236,7 @@ namespace Battleship
                 return null;
             }
 
-            var colInt = PossibleColumns.IndexOf(column,StringComparison.InvariantCultureIgnoreCase);
+            var colInt = PossibleColumns.IndexOf(column, StringComparison.InvariantCultureIgnoreCase);
             var location = new Location
             {
                 Column = colInt,
