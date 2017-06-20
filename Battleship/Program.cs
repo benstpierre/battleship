@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Battleship
 {
@@ -205,8 +204,8 @@ namespace Battleship
             {
                 return null;
             }
-            var column = strLocation.ToCharArray()[0];
-            if (!PossibleColumns.Contains(column.ToString()))
+            var column = strLocation.ToCharArray()[0].ToString();
+            if (!PossibleColumns.Contains(column))
             {
                 return null;
             }
@@ -215,13 +214,16 @@ namespace Battleship
             {
                 return null;
             }
-            if (row < 1 || row > 8)
+            row = row - 1;
+            if (row < 1 || row > 7)
             {
                 return null;
             }
+
+            int colInt = PossibleColumns.IndexOf(column,StringComparison.InvariantCultureIgnoreCase);
             var location = new Location
             {
-                Column = column,
+                Column = colInt,
                 Row = row
             };
             return location;

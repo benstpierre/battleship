@@ -11,10 +11,10 @@ namespace BattleshipTest
         {
             var shipLocation = new Program().ParseShipLocation("A3 A5");
             Assert.IsNotNull(shipLocation);
-            Assert.AreEqual(shipLocation.Start.Column, 'A');
-            Assert.AreEqual(shipLocation.Start.Row, 3);
-            Assert.AreEqual(shipLocation.End.Column, 'A');
-            Assert.AreEqual(shipLocation.End.Row, 5);
+            Assert.AreEqual(shipLocation.Start.Column, 0);
+            Assert.AreEqual(shipLocation.Start.Row, 2);
+            Assert.AreEqual(shipLocation.End.Column, 0);
+            Assert.AreEqual(shipLocation.End.Row, 4);
         }
 
         [TestMethod]
@@ -22,10 +22,10 @@ namespace BattleshipTest
         {
             var shipLocation = new Program().ParseShipLocation("a2 a5");
             Assert.IsNotNull(shipLocation);
-            Assert.AreEqual(shipLocation.Start.Column, 'A');
-            Assert.AreEqual(shipLocation.Start.Row, 2);
-            Assert.AreEqual(shipLocation.End.Column, 'A');
-            Assert.AreEqual(shipLocation.End.Row, 5);
+            Assert.AreEqual(shipLocation.Start.Column, 0);
+            Assert.AreEqual(shipLocation.Start.Row, 1);
+            Assert.AreEqual(shipLocation.End.Column, 0);
+            Assert.AreEqual(shipLocation.End.Row, 4);
         }
 
 
@@ -34,8 +34,8 @@ namespace BattleshipTest
         {
             var location = new Program().ParseLocation("A5");
             Assert.IsNotNull(location);
-            Assert.AreEqual(location.Column, 'A');
-            Assert.AreEqual(location.Row, 5);
+            Assert.AreEqual(location.Column, 0);
+            Assert.AreEqual(location.Row, 4);
         }
 
         [TestMethod]
