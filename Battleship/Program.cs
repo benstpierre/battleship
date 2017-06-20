@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Battleship
 {
@@ -10,12 +11,13 @@ namespace Battleship
 
         private bool _gameOver;
 
-        public ShipLocation P1ShipLocation { get; set; }
-        public ShipLocation P2ShipLocation { get; set; }
+        public ShipLocation Board1ShipLocation { get; set; }
+        public ShipLocation Board2ShipLocation { get; set; }
 
-        public readonly List<Location> P1FireLocations = new List<Location>();
-        public readonly List<Location> P2FireLocations = new List<Location>();
-
+        public readonly List<Location> Board1HitLocations = new List<Location>();
+        public readonly List<Location> Board2HitLocations = new List<Location>();
+        private GamePiece[,] _p1GameBoard;
+        private GamePiece[,] _p2GameBoard;
 
 
         static void Main(string[] args)
@@ -26,8 +28,8 @@ namespace Battleship
         private void Run()
         {
             WriteLine("Game Starting...");
-            P1ShipLocation = ReadShipLocation(1);
-            P2ShipLocation = ReadShipLocation(2);
+            Board1ShipLocation = ReadShipLocation(1);
+            Board2ShipLocation = ReadShipLocation(2);
 
             var isPlayer1Turn = true;
             while (!_gameOver)
@@ -35,11 +37,11 @@ namespace Battleship
                 var playerShot = ReadPlayerShot(isPlayer1Turn);
                 if (isPlayer1Turn)
                 {
-                    P1FireLocations.Add(playerShot);
+                    Board1HitLocations.Add(playerShot);
                 }
                 else
                 {
-                    P2FireLocations.Add(playerShot);
+                    Board2HitLocations.Add(playerShot);
                 }
                 if (CheckGameOver(isPlayer1Turn))
                 {
@@ -54,27 +56,69 @@ namespace Battleship
             ReadLine("Press any key to continue");
         }
 
-        private bool CheckGameOver(bool isPlayer1Turn)
+
+        //Note it is important Blank is the first entry
+        //As arrays initialized of Enum types initialize everything to the
+        //First index in this enum
+        enum GamePiece
         {
-            var shipLocation = isPlayer1Turn ? P1ShipLocation : P2ShipLocation;
-            var hitLocations = isPlayer1Turn ? P1FireLocations : P2FireLocations;
-
-
-
-
-
-
-
-            if ("".Equals(""))
-            {
-                _gameOver = true;
-            }
-            return _gameOver;
+            Blank, // LEAVE AS FIRST!
+            Ship,
+            ShipHit,
+            Miss
         }
+
+
+        public bool CheckGameOver(bool isPlayer1Turn)
+        {
+            var shipLocation = isPlayer1Turn ? Board1ShipLocation : Board2ShipLocation;
+            var hitLocations = isPlayer1Turn ? Board1HitLocations : Board2HitLocations;
+
+            GamePiece[,] gameBoard;
+            if (isPlayer1Turn)
+            {
+                _p1GameBoard = new GamePiece[8, 8];
+                gameBoard = _p1GameBoard;
+            }
+            else
+            {
+                _p2GameBoard = new GamePiece[8, 8];
+                gameBoard = _p2GameBoard;
+            }
+
+            foreach (var location in shipLocation.GetLocations())
+            {
+                gameBoard[location.Row, location.Column] = GamePiece.Ship;
+            }
+
+            int shipHitCount = 0;
+            foreach (var hitLocation in hitLocations)
+            {
+                if (gameBoard[hitLocation.Row, hitLocation.Column] == GamePiece.Ship)
+                {
+                    gameBoard[hitLocation.Row, hitLocation.Column] = GamePiece.ShipHit;
+                    shipHitCount++;
+                }
+                else
+                {
+                    gameBoard[hitLocation.Row, hitLocation.Column] = GamePiece.Miss;
+                }
+            }
+            return shipHitCount == 3;
+        }
+
 
         public String GetAsciiBoard(bool player1)
         {
-            return "";
+            var player = player1 ? 1 : 2;
+            var result = $"Player {player} Board:\n";
+            result += "  A B C D E F G H\n";
+
+
+          
+        
+
+            return result;
         }
 
         private Location ReadPlayerShot(Boolean isPlayer1Turn)

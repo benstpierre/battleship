@@ -206,6 +206,45 @@ namespace BattleshipTest
             Assert.AreEqual(shipLocation.End, locations[2]);
         }
 
+
+        [TestMethod]
+        public void TestGameOverTrue()
+        {
+            var program = new Program
+            {
+                Board1ShipLocation = new ShipLocation
+                {
+                    Start = new Location {Column = 3, Row = 1},
+                    End = new Location {Column = 5, Row = 1}
+                }
+            };
+            program.Board1HitLocations.Add(new Location { Column = 3, Row = 1 });
+            program.Board1HitLocations.Add(new Location { Column = 4, Row = 1 });
+            program.Board1HitLocations.Add(new Location { Column = 5, Row = 1 });
+            var gameOver = program.CheckGameOver(true);
+            Assert.IsTrue(gameOver);
+        } 
+
+
+        [TestMethod]
+        public void TestGameOverFalse()
+        {
+            var program = new Program
+            {
+                Board1ShipLocation = new ShipLocation
+                {
+                    Start = new Location { Column = 3, Row = 1 },
+                    End = new Location { Column = 5, Row = 1 }
+                }
+            };
+            program.Board1HitLocations.Add(new Location { Column = 3, Row = 1 });
+            program.Board1HitLocations.Add(new Location { Column = 4, Row = 2 });
+            program.Board1HitLocations.Add(new Location { Column = 5, Row = 1 });
+            var gameOver = program.CheckGameOver(true);
+            Assert.IsFalse(gameOver);
+        }
+
+
         [TestMethod]
         //Test a vertical ship defined backwards (start is to the bottom of end)
         public void TestGetShipGameBoard()
@@ -226,12 +265,12 @@ namespace BattleshipTest
 
             var program = new Program()
             {
-                P1ShipLocation = shipLocation,
+                Board1ShipLocation = shipLocation,
             };
 
-            program.P2FireLocations.Add(new Location { Column = 1, Row = 4 });
-            program.P2FireLocations.Add(new Location { Column = 4, Row = 5 });
-            program.P2FireLocations.Add(new Location { Column = 7, Row = 6 });
+            program.Board2HitLocations.Add(new Location { Column = 1, Row = 4 });
+            program.Board2HitLocations.Add(new Location { Column = 4, Row = 5 });
+            program.Board2HitLocations.Add(new Location { Column = 7, Row = 6 });
 
             var asciiBoardExpected =
 @"Player 1 Board:
