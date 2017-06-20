@@ -30,12 +30,21 @@ namespace BattleshipTest
 
 
         [TestMethod]
-        public void TestParseLocation()
+        public void TestParseValidLocation()
         {
             var location = new Program().ParseLocation("A5");
             Assert.IsNotNull(location);
             Assert.AreEqual(location.Column, 0);
             Assert.AreEqual(location.Row, 4);
+        }
+
+        [TestMethod]
+        public void TestParseValidLocation2()
+        {
+            var location = new Program().ParseLocation("A1");
+            Assert.IsNotNull(location);
+            Assert.AreEqual(location.Column, 0);
+            Assert.AreEqual(location.Row, 0);
         }
 
         [TestMethod]
@@ -221,7 +230,7 @@ namespace BattleshipTest
             program.Board1HitLocations.Add(new Location { Column = 3, Row = 1 });
             program.Board1HitLocations.Add(new Location { Column = 4, Row = 1 });
             program.Board1HitLocations.Add(new Location { Column = 5, Row = 1 });
-            var gameOver = program.CheckGameOver(true);
+            var gameOver = program.CheckGameOver(false);
             Assert.IsTrue(gameOver);
         }
 
@@ -231,7 +240,7 @@ namespace BattleshipTest
         {
             var program = new Program
             {
-                Board1ShipLocation = new ShipLocation
+                Board2ShipLocation = new ShipLocation
                 {
                     Start = new Location { Column = 3, Row = 1 },
                     End = new Location { Column = 5, Row = 1 }
@@ -261,7 +270,7 @@ namespace BattleshipTest
             program.Board1HitLocations.Add(new Location { Column = 2, Row = 1 });
             program.Board1HitLocations.Add(new Location { Column = 3, Row = 2 });
             program.Board1HitLocations.Add(new Location { Column = 4, Row = 1 });
-            program.CheckGameOver(true);
+            program.CheckGameOver(false);
 
             //Note I did not use a string literal here as the whitespace is invisible making the test hard to read
             var asciiBoardExpected =

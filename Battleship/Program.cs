@@ -16,7 +16,6 @@ namespace Battleship
         public readonly List<Location> Board2HitLocations = new List<Location>();
         private GamePiece[,] _p1GameBoard;
         private GamePiece[,] _p2GameBoard;
-        private bool _magic;
 
 
         static void Main(string[] args)
@@ -31,7 +30,6 @@ namespace Battleship
             Board2ShipLocation = ReadShipLocation(2);
 
             var isPlayer1Turn = true;
-            int x = 0;
             while (true)
             {
                 var playerShot = ReadPlayerShot(isPlayer1Turn);
@@ -53,11 +51,6 @@ namespace Battleship
                     break;
                 }
                 isPlayer1Turn = !isPlayer1Turn;
-                if (x > 2)
-                {
-                    _magic = true;
-                }
-                x++;
             }
 
             ReadLine("Press [Enter] to end program...");
@@ -84,13 +77,13 @@ namespace Battleship
             GamePiece[,] gameBoard;
             if (isPlayer1Turn)
             {
-                _p1GameBoard = new GamePiece[8, 8];
-                gameBoard = _p1GameBoard;
+                _p2GameBoard = new GamePiece[8, 8];
+                gameBoard = _p2GameBoard;
             }
             else
             {
-                _p2GameBoard = new GamePiece[8, 8];
-                gameBoard = _p2GameBoard;
+                _p1GameBoard = new GamePiece[8, 8];
+                gameBoard = _p1GameBoard;
             }
 
             foreach (var location in shipLocation.GetLocations())
@@ -153,14 +146,6 @@ namespace Battleship
 
         private Location ReadPlayerShot(Boolean isPlayer1Turn)
         {
-            if (_magic)
-            {
-                var p1 = GetAsciiBoard(true);
-                WriteLine(p1);
-                var p2 = GetAsciiBoard(false);
-                WriteLine(p2);
-            }
-
             var player = isPlayer1Turn ? 1 : 2;
             var otherPlayer = isPlayer1Turn ? 2 : 1;
             var strLocation = ReadLine($"Player {player}: Provide a location to hit Player {otherPlayer}. Format: B5").Trim().ToUpper();
@@ -231,7 +216,7 @@ namespace Battleship
                 return null;
             }
             row = row - 1;
-            if (row < 1 || row > 7)
+            if (row < 0 || row > 7)
             {
                 return null;
             }
