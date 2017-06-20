@@ -214,8 +214,8 @@ namespace BattleshipTest
             {
                 Board1ShipLocation = new ShipLocation
                 {
-                    Start = new Location {Column = 3, Row = 1},
-                    End = new Location {Column = 5, Row = 1}
+                    Start = new Location { Column = 3, Row = 1 },
+                    End = new Location { Column = 5, Row = 1 }
                 }
             };
             program.Board1HitLocations.Add(new Location { Column = 3, Row = 1 });
@@ -223,7 +223,7 @@ namespace BattleshipTest
             program.Board1HitLocations.Add(new Location { Column = 5, Row = 1 });
             var gameOver = program.CheckGameOver(true);
             Assert.IsTrue(gameOver);
-        } 
+        }
 
 
         [TestMethod]
@@ -249,40 +249,32 @@ namespace BattleshipTest
         //Test a vertical ship defined backwards (start is to the bottom of end)
         public void TestGetShipGameBoard()
         {
-            var shipLocation = new ShipLocation
+
+            var program = new Program
             {
-                Start = new Location
+                Board1ShipLocation = new ShipLocation
                 {
-                    Row = 3,
-                    Column = 2
-                },
-                End = new Location
-                {
-                    Row = 5,
-                    Column = 2
+                    Start = new Location { Column = 2, Row = 1 },
+                    End = new Location { Column = 4, Row = 1 }
                 }
             };
+            program.Board1HitLocations.Add(new Location { Column = 2, Row = 1 });
+            program.Board1HitLocations.Add(new Location { Column = 3, Row = 2 });
+            program.Board1HitLocations.Add(new Location { Column = 4, Row = 1 });
+            program.CheckGameOver(true);
 
-            var program = new Program()
-            {
-                Board1ShipLocation = shipLocation,
-            };
-
-            program.Board2HitLocations.Add(new Location { Column = 1, Row = 4 });
-            program.Board2HitLocations.Add(new Location { Column = 4, Row = 5 });
-            program.Board2HitLocations.Add(new Location { Column = 7, Row = 6 });
-
+            //Note I did not use a string literal here as the whitespace is invisible making the test hard to read
             var asciiBoardExpected =
-@"Player 1 Board:
-  A B C D E F G H               
-1 - - - - - - - -
-2 - - - - - - - - 
-3 - - - - - - - -
-4 - - - - - - - -
-5 - - - - - - - -
-6 - - - - - - - -
-7 - - - - - - - -
-8 - - - - - - - -";
+                                        "Player 1 Board:\n" +
+                                        "  A B C D E F G H\n" +
+                                        "1 - - - - - - - -\n" +
+                                        "2 - - X S X - - -\n" +
+                                        "3 - - - X - - - -\n" +
+                                        "4 - - - - - - - -\n" +
+                                        "5 - - - - - - - -\n" +
+                                        "6 - - - - - - - -\n" +
+                                        "7 - - - - - - - -\n" +
+                                        "8 - - - - - - - -\n";
 
             var asciiBoardActual = program.GetAsciiBoard(true);
             Assert.AreEqual(asciiBoardExpected, asciiBoardActual);

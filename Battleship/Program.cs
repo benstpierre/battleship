@@ -110,14 +110,37 @@ namespace Battleship
 
         public String GetAsciiBoard(bool player1)
         {
+            var gameBoard = player1 ? _p1GameBoard : _p2GameBoard;
             var player = player1 ? 1 : 2;
             var result = $"Player {player} Board:\n";
             result += "  A B C D E F G H\n";
-
-
-          
-        
-
+            for (int i = 0; i < gameBoard.GetLength(0); i++)
+            {
+                //Add the row number
+                result += i + 1;
+                for (int j = 0; j < gameBoard.GetLength(1); j++)
+                {
+                    var currentPiece = gameBoard[i, j];
+                    char c;
+                    switch (currentPiece)
+                    {
+                        case GamePiece.Blank:
+                            c = '-';
+                            break;
+                        case GamePiece.Miss:
+                        case GamePiece.ShipHit:
+                            c = 'X';
+                            break;
+                        case GamePiece.Ship:
+                            c = 'S';
+                            break;
+                        default:
+                            throw new Exception("Invalid GamePiece");
+                    }
+                    result += " " + c;
+                }
+                result += "\n";
+            }
             return result;
         }
 
