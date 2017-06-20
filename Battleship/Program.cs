@@ -10,11 +10,11 @@ namespace Battleship
 
         private bool _gameOver;
 
-        private ShipLocation _p1ShipLocation;
-        private ShipLocation _p2ShipLocation;
+        public ShipLocation P1ShipLocation { get; set; }
+        public ShipLocation P2ShipLocation { get; set; }
 
-        private readonly List<Location> _p1FireLocations = new List<Location>();
-        private readonly List<Location> _p2FireLocations = new List<Location>();
+        public readonly List<Location> P1FireLocations = new List<Location>();
+        public readonly List<Location> P2FireLocations = new List<Location>();
 
 
 
@@ -26,8 +26,8 @@ namespace Battleship
         private void Run()
         {
             WriteLine("Game Starting...");
-            _p1ShipLocation = ReadShipLocation(1);
-            _p2ShipLocation = ReadShipLocation(2);
+            P1ShipLocation = ReadShipLocation(1);
+            P2ShipLocation = ReadShipLocation(2);
 
             var isPlayer1Turn = true;
             while (!_gameOver)
@@ -35,11 +35,11 @@ namespace Battleship
                 var playerShot = ReadPlayerShot(isPlayer1Turn);
                 if (isPlayer1Turn)
                 {
-                    _p1FireLocations.Add(playerShot);
+                    P1FireLocations.Add(playerShot);
                 }
                 else
                 {
-                    _p2FireLocations.Add(playerShot);
+                    P2FireLocations.Add(playerShot);
                 }
                 if (CheckGameOver(isPlayer1Turn))
                 {
@@ -56,9 +56,9 @@ namespace Battleship
 
         private bool CheckGameOver(bool isPlayer1Turn)
         {
-            var shipLocation = isPlayer1Turn ? _p1ShipLocation : _p2ShipLocation;
-            var hitLocations = isPlayer1Turn ? _p1FireLocations : _p2FireLocations;
-            
+            var shipLocation = isPlayer1Turn ? P1ShipLocation : P2ShipLocation;
+            var hitLocations = isPlayer1Turn ? P1FireLocations : P2FireLocations;
+
 
 
 
@@ -70,6 +70,11 @@ namespace Battleship
                 _gameOver = true;
             }
             return _gameOver;
+        }
+
+        public String GetAsciiBoard(bool player1)
+        {
+            return "";
         }
 
         private Location ReadPlayerShot(Boolean isPlayer1Turn)

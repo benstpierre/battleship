@@ -206,6 +206,52 @@ namespace BattleshipTest
             Assert.AreEqual(shipLocation.End, locations[2]);
         }
 
+        [TestMethod]
+        //Test a vertical ship defined backwards (start is to the bottom of end)
+        public void TestGetShipGameBoard()
+        {
+            var shipLocation = new ShipLocation
+            {
+                Start = new Location
+                {
+                    Row = 3,
+                    Column = 2
+                },
+                End = new Location
+                {
+                    Row = 5,
+                    Column = 2
+                }
+            };
+
+            var program = new Program()
+            {
+                P1ShipLocation = shipLocation,
+            };
+
+            program.P2FireLocations.Add(new Location { Column = 1, Row = 4 });
+            program.P2FireLocations.Add(new Location { Column = 4, Row = 5 });
+            program.P2FireLocations.Add(new Location { Column = 7, Row = 6 });
+
+            var asciiBoardExpected =
+@"Player 1 Board:
+  A B C D E F G H               
+1 - - - - - - - -
+2 - - - - - - - - 
+3 - - - - - - - -
+4 - - - - - - - -
+5 - - - - - - - -
+6 - - - - - - - -
+7 - - - - - - - -
+8 - - - - - - - -";
+
+            var asciiBoardActual = program.GetAsciiBoard(true);
+            Assert.AreEqual(asciiBoardExpected, asciiBoardActual);
+        }
+
+
+
+
 
 
 
