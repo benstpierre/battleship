@@ -18,6 +18,7 @@ namespace Battleship
         private GamePiece[,] _p2GameBoard;
 
 
+        // ReSharper disable once UnusedParameter.Local
         static void Main(string[] args)
         {
             new Program().Run();

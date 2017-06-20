@@ -18,7 +18,7 @@ namespace Battleship
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((Location) obj);
         }
 
@@ -26,7 +26,9 @@ namespace Battleship
         {
             unchecked
             {
+                // ReSharper disable NonReadonlyMemberInGetHashCode            
                 return (Row * 397) ^ Column;
+                // ReSharper enable NonReadonlyMemberInGetHashCode            
             }
         }
     }

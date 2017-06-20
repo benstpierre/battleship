@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace BattleshipTest
 {
     [TestClass]
-    public class UnitTest1
+    public class BattleShipUnitTests
     {
         [TestMethod]
         public void TestParseValidShipLocation()
