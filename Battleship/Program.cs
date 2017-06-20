@@ -210,7 +210,7 @@ namespace Battleship
                 return null;
             }
             var strRow = strLocation.ToCharArray()[1].ToString();
-            if (!Int32.TryParse(strRow, out int row))
+            if (!int.TryParse(strRow, out int row))
             {
                 return null;
             }
@@ -220,7 +220,7 @@ namespace Battleship
                 return null;
             }
 
-            int colInt = PossibleColumns.IndexOf(column,StringComparison.InvariantCultureIgnoreCase);
+            var colInt = PossibleColumns.IndexOf(column,StringComparison.InvariantCultureIgnoreCase);
             var location = new Location
             {
                 Column = colInt,
